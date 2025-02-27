@@ -16,7 +16,7 @@ func (c *Client) unmarshalLocationResponse(response []byte) (ResponseShallowLoca
 }
 
 func (c *Client) ListLocations(pageUrl *string) (ResponseShallowLocations, error) {
-	url := baseURL + "/location-area"
+	url := locationUrl
 	if pageUrl != nil {
 		url = *pageUrl
 	}

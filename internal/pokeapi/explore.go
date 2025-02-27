@@ -16,7 +16,7 @@ func (c *Client) unmarshalExploreResponse(response []byte) (ResponseShallowExplo
 }
 
 func (c *Client) ExploreLocation(locationName string) (ResponseShallowExplore, error) {
-	url := baseURL + "/location-area/" + locationName
+	url := locationUrl + locationName
 
 	if response, exists := c.cache.Get(url); exists {
 		log.Println("Hit cache, instant response")
