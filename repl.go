@@ -9,7 +9,7 @@ import (
 )
 
 type config struct {
-	pokeapiClient    pokeapi.Client
+	pokeapiClient    *pokeapi.Client
 	nextLocationsURL *string
 	prevLocationsURL *string
 }
@@ -24,10 +24,14 @@ func runRepl(cfg *config) {
 		words := cleanInput(input)
 		if len(words) > 0 {
 			commandName := words[0]
+			args := []string{}
+			if len(words) > 1 {
+				args = words[1:]
+			}
+
 			command, exists := commands[commandName]
 			if exists {
-				err := command.callback(cfg)
-				if err != nil {
+				if err := command.callback(cfg, args...); err != nil {
 					fmt.Println(err)
 				}
 			} else {
@@ -41,7 +45,7 @@ func runRepl(cfg *config) {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -60,6 +64,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Get the previous page of locations",
 			callback:    commandMapBack,
+		},
+		"explore": {
+			name:        "explore <location_name>",
+			description: "Get the list of pokemons in given location",
+			callback:    commandExplore,
 		},
 		"exit": {
 			name:        "exit",
