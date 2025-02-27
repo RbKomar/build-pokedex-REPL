@@ -19,7 +19,7 @@ func runRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
 	for {
-		fmt.Println("Pokedex > ")
+		fmt.Print("Pokedex > ")
 		scanner.Scan()
 		input := scanner.Text()
 		words := cleanInput(input)
@@ -80,6 +80,11 @@ func getCommands() map[string]cliCommand {
 			name:        "inspect <pokemon_name>",
 			description: "Inspect the pokemon",
 			callback:    commandInspect,
+		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "Prints your pokedex",
+			callback:    commandPokedex,
 		},
 		"exit": {
 			name:        "exit",
